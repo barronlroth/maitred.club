@@ -215,6 +215,102 @@
       color: var(--ink-dim);
     }
 
+    /* --- Spots Counter --- */
+    .spots-bar {
+      margin-top: 28px;
+      max-width: 420px;
+    }
+
+    .spots-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .spots-label .spots-text {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-mid);
+    }
+
+    .spots-label .spots-count {
+      font-family: 'Instrument Serif', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .spots-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .spots-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px;
+      transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 0;
+    }
+
+    .spots-fill.animate {
+      width: 68%;
+    }
+
+    /* --- Founding Badge --- */
+    .founding-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(184, 67, 47, 0.15);
+      padding: 6px 14px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    /* --- Social proof ticker --- */
+    .social-proof {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--ink-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .proof-avatars {
+      display: flex;
+    }
+
+    .proof-avatars .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      background: var(--surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--ink-dim);
+    }
+
+    .proof-avatars .avatar:first-child { margin-left: 0; }
+
+    .proof-avatars .avatar.a1 { background: #E8D5C4; color: #7A5C3E; }
+    .proof-avatars .avatar.a2 { background: #D4E0D2; color: #4A6348; }
+    .proof-avatars .avatar.a3 { background: #D8D4E4; color: #5A5072; }
+    .proof-avatars .avatar.a4 { background: #E4D4D4; color: #724A4A; }
+
     /* Hero image side */
     .hero-image {
       height: 100%;
@@ -654,6 +750,24 @@
         <button type="submit">Join the Waitlist</button>
       </form>
       <p class="form-note reveal">Free to join. No spam.</p>
+      <div class="spots-bar reveal">
+        <div class="spots-label">
+          <span class="spots-text">Founding member spots</span>
+          <span class="spots-count" id="spots-remaining">64 of 200 remaining</span>
+        </div>
+        <div class="spots-track">
+          <div class="spots-fill" id="spots-fill"></div>
+        </div>
+      </div>
+      <div class="social-proof reveal">
+        <div class="proof-avatars">
+          <div class="avatar a1">MR</div>
+          <div class="avatar a2">KL</div>
+          <div class="avatar a3">JS</div>
+          <div class="avatar a4">+</div>
+        </div>
+        <span>136 couples joined this month</span>
+      </div>
     </div>
     <div class="hero-image" role="img" aria-label="Couple entering a restaurant"></div>
   </div>
@@ -742,11 +856,12 @@
       <div class="pricing-left reveal">
         <div class="section-eyebrow">Pricing</div>
         <h2 class="section-heading">One flat fee. No surprises — except the restaurant.</h2>
-        <p class="section-body">The $20 covers the concierge — the research, the booking, the curation. Your actual dinner tab is on you, just like any other night out.</p>
+        <p class="section-body">The first 200 members lock in $20/dinner for life. After that, the price goes up. The $20 covers the concierge — the research, the booking, the curation. Your dinner tab is on you, just like any other night out.</p>
       </div>
       <div class="pricing-card reveal">
+        <div class="founding-badge">Founding Member Price</div>
         <div class="pricing-amount">$20 <span>/ dinner</span></div>
-        <p class="pricing-period">Billed biweekly &middot; $40/month</p>
+        <p class="pricing-period">Billed biweekly &middot; $40/month &middot; Locked in forever at this rate</p>
         <ul class="pricing-features">
           <li><span class="check">&#10003;</span> AI-curated restaurant every 2 weeks</li>
           <li><span class="check">&#10003;</span> Reservation booked for you</li>
@@ -801,8 +916,8 @@
 
   <!-- Bottom CTA -->
   <div class="bottom-cta" id="signup-bottom">
-    <div class="section-heading reveal">Ready to stop planning?</div>
-    <p class="reveal">Join the waitlist. Your first surprise dinner is closer than you think.</p>
+    <div class="section-heading reveal">Only 64 founding spots left.</div>
+    <p class="reveal">Lock in $20/dinner for life. Once the 200 spots fill, the price goes up.</p>
     <form class="signup-form reveal" id="signup-footer" action="https://formspree.io/f/xpwzgkpd" method="POST">
       <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" />
       <button type="submit">Join the Waitlist</button>
@@ -815,6 +930,12 @@
   </footer>
 
   <script>
+    // Spots bar animation
+    setTimeout(() => {
+      const fill = document.getElementById('spots-fill');
+      if (fill) fill.classList.add('animate');
+    }, 600);
+
     // Reveal on scroll
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -858,7 +979,7 @@
             body: JSON.stringify({ email })
           });
           if (res.ok) {
-            form.innerHTML = '<div style="padding:14px 20px;color:var(--accent);font-size:15px;font-weight:500;">You\u2019re on the list. We\u2019ll be in touch.</div>';
+            form.innerHTML = '<div style="padding:14px 20px;color:var(--accent);font-size:15px;font-weight:500;">You\u2019re in. Founding spot secured. We\u2019ll be in touch.</div>';
           } else {
             btn.textContent = 'Try again';
             btn.disabled = false;
