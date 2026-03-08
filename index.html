@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maître D' — Surprise Date Nights, Curated by AI</title>
+  <meta name="description" content="Every two weeks, an AI concierge picks and books a surprise restaurant for you. No hints. No planning. Just show up. $20/dinner." />
+  <meta property="og:title" content="Maître D' — Surprise Date Nights, Curated by AI" />
+  <meta property="og:description" content="An AI concierge scouts, books, and surprises. You just show up. $20/dinner." />
+  <meta property="og:image" content="https://maitred.fun/og-share.jpg" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="698" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maitred.fun/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://maitred.fun/og-share.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --bg-warm: #F4EFE8;
+      --surface: #FFFFFF;
+      --surface-alt: #EDE8E0;
+      --border: #DDD6CB;
+      --border-light: #E8E2D8;
+      --accent: #B8432F;
+      --accent-hover: #9E3828;
+      --accent-dim: rgba(184, 67, 47, 0.08);
+      --ink: #1A1814;
+      --ink-mid: #4A453D;
+      --ink-dim: #8A8279;
+      --ink-faint: #B5ADA3;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Nav --- */
+    .topnav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+
+    .topnav.scrolled {
+      background: rgba(250, 247, 242, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .topnav .logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      font-style: italic;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .topnav .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1.5px solid var(--accent);
+      padding: 8px 20px;
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .topnav .nav-cta:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* --- Hero --- */
+    .hero {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0;
+      position: relative;
+    }
+
+    .hero-content {
+      padding: 120px 64px 120px 80px;
+      max-width: 640px;
+      margin-left: auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .hero-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-bottom: 28px;
+      color: var(--ink);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      font-weight: 300;
+      margin-bottom: 44px;
+      max-width: 420px;
+    }
+
+    .hero-sub strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* Email form */
+    .signup-form {
+      display: flex;
+      gap: 0;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .signup-form:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .signup-form input[type="email"] {
+      flex: 1;
+      padding: 15px 18px;
+      background: transparent;
+      border: none;
+      color: var(--ink);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .signup-form input[type="email"]::placeholder {
+      color: var(--ink-faint);
+    }
+
+    .signup-form button {
+      padding: 15px 24px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .signup-form button:hover { background: var(--accent-hover); }
+    .signup-form button:active { transform: scale(0.98); }
+
+    .form-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--ink-dim);
+    }
+
+    /* Hero image side */
+    .hero-image {
+      height: 100%;
+      min-height: 100dvh;
+      background: url('hero.jpg') center/cover no-repeat;
+      position: relative;
+    }
+
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--bg) 0%, rgba(250,247,242,0) 20%);
+    }
+
+    /* --- Sections --- */
+    section {
+      padding: 140px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .section-heading {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+
+    .section-body {
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--ink-mid);
+      max-width: 520px;
+      font-weight: 300;
+    }
+
+    .divider {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 1px;
+      background: var(--border-light);
+    }
+
+    /* --- How It Works --- */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      margin-top: 72px;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .step {
+      padding: 48px 40px;
+      position: relative;
+    }
+
+    .step:nth-child(1) { border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+    .step:nth-child(2) { border-bottom: 1px solid var(--border-light); }
+    .step:nth-child(3) { border-right: 1px solid var(--border-light); }
+
+    .step-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-faint);
+      margin-bottom: 20px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .step-desc {
+      font-size: 15px;
+      color: var(--ink-dim);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* --- Compare --- */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 72px;
+    }
+
+    .compare-col {
+      padding: 44px 40px;
+      border-radius: 20px;
+    }
+
+    .compare-col.get {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+    }
+
+    .compare-col.skip {
+      background: var(--surface-alt);
+    }
+
+    .compare-col h3 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 28px;
+    }
+
+    .compare-col.get h3 { color: var(--accent); }
+    .compare-col.skip h3 { color: var(--ink-dim); }
+
+    .compare-col ul { list-style: none; }
+
+    .compare-col ul li {
+      padding: 11px 0;
+      font-size: 15px;
+      color: var(--ink-mid);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-weight: 300;
+    }
+
+    .compare-col.skip ul li { border-color: var(--border); }
+    .compare-col ul li:last-child { border-bottom: none; }
+
+    .compare-col ul li .marker {
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .compare-col.get .marker { color: var(--accent); }
+    .compare-col.skip .marker { color: var(--ink-faint); }
+
+    /* --- Pricing --- */
+    .pricing-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .pricing-left .section-eyebrow,
+    .pricing-left .section-heading,
+    .pricing-left .section-body { max-width: none; }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: 24px;
+      padding: 52px 44px;
+    }
+
+    .pricing-amount {
+      font-family: 'Instrument Serif', serif;
+      font-size: 72px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .pricing-amount span {
+      font-size: 20px;
+      color: var(--ink-dim);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+    }
+
+    .pricing-period {
+      font-size: 14px;
+      color: var(--ink-dim);
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+
+    .pricing-features li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 15px;
+      color: var(--ink-mid);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 300;
+    }
+
+    .pricing-features li:last-child { border-bottom: none; }
+
+    .pricing-features .check {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .pricing-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: var(--accent);
+      color: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .pricing-cta:hover { background: var(--accent-hover); }
+    .pricing-cta:active { transform: scale(0.98); }
+
+    .pricing-footnote {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--ink-faint);
+      text-align: center;
+    }
+
+    /* --- FAQ --- */
+    .faq-list { margin-top: 64px; max-width: 640px; }
+
+    .faq-item { border-bottom: 1px solid var(--border-light); }
+
+    .faq-q {
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 0;
+      transition: color 0.2s;
+    }
+
+    .faq-q:hover { color: var(--accent); }
+
+    .faq-q::after {
+      content: '+';
+      font-size: 22px;
+      color: var(--ink-faint);
+      flex-shrink: 0;
+      transition: transform 0.3s, color 0.3s;
+      font-weight: 300;
+    }
+
+    .faq-item.open .faq-q::after {
+      transform: rotate(45deg);
+      color: var(--accent);
+    }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      font-size: 15px;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding-bottom: 24px;
+    }
+
+    /* --- Bottom CTA --- */
+    .bottom-cta {
+      text-align: center;
+      padding: 140px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .bottom-cta .section-heading {
+      max-width: none;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bottom-cta p {
+      font-size: 17px;
+      color: var(--ink-mid);
+      margin-bottom: 40px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .bottom-cta .signup-form {
+      margin: 0 auto;
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--ink-faint);
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* --- Animations --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* hero content always visible */
+    .hero-content .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-content {
+        padding: 140px 32px 64px;
+        max-width: none;
+        margin-left: 0;
+      }
+
+      .hero-image {
+        min-height: 50vh;
+        height: 50vh;
+      }
+
+      .hero-image::after {
+        background: linear-gradient(to bottom, var(--bg) 0%, rgba(250,247,242,0) 30%);
+      }
+
+      section { padding: 80px 24px; }
+      .bottom-cta { padding: 80px 24px; }
+
+      .steps { grid-template-columns: 1fr; }
+      .step:nth-child(1), .step:nth-child(2), .step:nth-child(3), .step:nth-child(4) {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+      }
+      .step:last-child { border-bottom: none; }
+
+      .compare-grid { grid-template-columns: 1fr; }
+
+      .pricing-section {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .signup-form {
+        flex-direction: column;
+      }
+
+      .signup-form input[type="email"] {
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .topnav { padding: 16px 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 40px; }
+      .pricing-amount { font-size: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="topnav" id="topnav">
+    <a href="#" class="logo">Maître D'</a>
+    <a href="#pricing" class="nav-cta">Join Waitlist</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag reveal"><span class="dot"></span> Now accepting signups — US &amp; Canada</div>
+      <h1 class="reveal">Stop planning<br><em>date night.</em></h1>
+      <p class="hero-sub reveal">Every two weeks, an AI concierge picks a surprise restaurant for you. You don't know where you're going until you arrive.</p>
+      <form class="signup-form reveal" id="signup-hero" action="https://formspree.io/f/xpwzgkpd" method="POST">
+        <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+        <button type="submit">Join the Waitlist</button>
+      </form>
+      <p class="form-note reveal">Free to join. No spam.</p>
+    </div>
+    <div class="hero-image" role="img" aria-label="Couple entering a restaurant"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Problem -->
+  <section>
+    <div class="reveal">
+      <div class="section-eyebrow">The Problem</div>
+      <h2 class="section-heading">Date night shouldn't feel like homework.</h2>
+      <p class="section-body">Scrolling Yelp. Reading 200 reviews. Checking availability. Arguing over cuisine. By the time you've picked a spot, the night already feels like work. We take the entire decision off your plate.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- How It Works -->
+  <section>
+    <div class="reveal">
+      <div class="section-eyebrow">How It Works</div>
+      <h2 class="section-heading">Four steps. Zero decisions.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">i.</div>
+        <div class="step-title">We research</div>
+        <p class="step-desc">New openings, seasonal menus, under-the-radar gems, trending spots. We're always scouting your city's dining scene.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">ii.</div>
+        <div class="step-title">We book</div>
+        <p class="step-desc">We secure the reservation — factoring in cuisine variety, your dietary restrictions, and what you've rated before.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">iii.</div>
+        <div class="step-title">You get a ping</div>
+        <p class="step-desc">A calendar invite with a time and address. No restaurant name. No cuisine hints. That's the entire point.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">iv.</div>
+        <div class="step-title">You show up</div>
+        <p class="step-desc">Walk in, sit down, be surprised. After dinner, rate it. We get smarter every time.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Compare -->
+  <section>
+    <div class="reveal">
+      <div class="section-eyebrow">The Trade-Off</div>
+      <h2 class="section-heading">What changes when you stop choosing.</h2>
+    </div>
+    <div class="compare-grid reveal">
+      <div class="compare-col get">
+        <h3>What you get</h3>
+        <ul>
+          <li><span class="marker">+</span> Curated picks from your city's best — not just whatever's open on Resy</li>
+          <li><span class="marker">+</span> A genuine surprise every two weeks</li>
+          <li><span class="marker">+</span> Variety you'd never pick yourself</li>
+          <li><span class="marker">+</span> Dietary restrictions handled before you arrive</li>
+          <li><span class="marker">+</span> Smarter picks over time, based on your feedback</li>
+          <li><span class="marker">+</span> Something to actually look forward to</li>
+        </ul>
+      </div>
+      <div class="compare-col skip">
+        <h3>What you skip</h3>
+        <ul>
+          <li><span class="marker">&mdash;</span> The "where do you want to eat" conversation</li>
+          <li><span class="marker">&mdash;</span> 45 minutes comparing reviews on your phone</li>
+          <li><span class="marker">&mdash;</span> Defaulting to the same three places</li>
+          <li><span class="marker">&mdash;</span> Decision fatigue before you've left the house</li>
+          <li><span class="marker">&mdash;</span> FOMO about the restaurant you didn't pick</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="pricing-section">
+      <div class="pricing-left reveal">
+        <div class="section-eyebrow">Pricing</div>
+        <h2 class="section-heading">One flat fee. No surprises — except the restaurant.</h2>
+        <p class="section-body">The $20 covers the concierge — the research, the booking, the curation. Your actual dinner tab is on you, just like any other night out.</p>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="pricing-amount">$20 <span>/ dinner</span></div>
+        <p class="pricing-period">Billed biweekly &middot; $40/month</p>
+        <ul class="pricing-features">
+          <li><span class="check">&#10003;</span> AI-curated restaurant every 2 weeks</li>
+          <li><span class="check">&#10003;</span> Reservation booked for you</li>
+          <li><span class="check">&#10003;</span> Allergies and restrictions handled</li>
+          <li><span class="check">&#10003;</span> Picks improve with your ratings</li>
+          <li><span class="check">&#10003;</span> Skip any week with 48h notice</li>
+          <li><span class="check">&#10003;</span> Cancel anytime</li>
+        </ul>
+        <a href="#signup-hero" class="pricing-cta">Join the Waitlist</a>
+        <p class="pricing-footnote">You pay for your own meal. We just pick the perfect one.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FAQ -->
+  <section>
+    <div class="reveal">
+      <div class="section-eyebrow">FAQ</div>
+      <h2 class="section-heading">Questions, answered.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q">What if I don't like the restaurant?</div>
+        <div class="faq-a">Rate it and tell us why. Our picks improve with every piece of feedback. If one truly misses the mark, we'll make it right.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How much will the actual dinner cost?</div>
+        <div class="faq-a">It varies. We pick from a wide range — sometimes a $35/person neighborhood spot, sometimes a $120 tasting menu. You'll always know the approximate price tier beforehand so there are no bill-shock surprises.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What about dietary restrictions?</div>
+        <div class="faq-a">Tell us once. We vet every menu and communicate with the restaurant before you arrive. Allergies, vegetarian, vegan, kosher, halal — all covered.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is this just for couples?</div>
+        <div class="faq-a">Built for couples who want to keep date night exciting. We're exploring options for friend groups down the line.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Where is this available?</div>
+        <div class="faq-a">Currently available in the US and Canada. Join the waitlist and we'll let you know when we're in your city.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I skip a week?</div>
+        <div class="faq-a">Absolutely. Just let us know 48 hours in advance and you won't be charged for that cycle.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Bottom CTA -->
+  <div class="bottom-cta" id="signup-bottom">
+    <div class="section-heading reveal">Ready to stop planning?</div>
+    <p class="reveal">Join the waitlist. Your first surprise dinner is closer than you think.</p>
+    <form class="signup-form reveal" id="signup-footer" action="https://formspree.io/f/xpwzgkpd" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+      <button type="submit">Join the Waitlist</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Maître D' is powered by <a href="https://alfred.barronroth.com">Alfred</a> — an AI concierge for life's finer things.</p>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      // Don't hide hero content
+      if (!el.closest('.hero-content')) {
+        obs.observe(el);
+      }
+    });
+
+    // Sticky nav background
+    const nav = document.getElementById('topnav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+    });
+
+    // Form → inline success
+    document.querySelectorAll('.signup-form').forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = form.querySelector('input[type="email"]').value;
+        const btn = form.querySelector('button');
+        btn.textContent = 'Sending\u2026';
+        btn.disabled = true;
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          if (res.ok) {
+            form.innerHTML = '<div style="padding:14px 20px;color:var(--accent);font-size:15px;font-weight:500;">You\u2019re on the list. We\u2019ll be in touch.</div>';
+          } else {
+            btn.textContent = 'Try again';
+            btn.disabled = false;
+          }
+        } catch {
+          btn.textContent = 'Try again';
+          btn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
