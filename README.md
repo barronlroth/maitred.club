@@ -2,7 +2,7 @@
 
 Surprise blind restaurant dates in San Francisco, curated by an AI butler.
 
-**[maitred.fun](https://maitred.fun)**
+**[maitred.fun](https://maitred.club)**
 
 ## What is this?
 
